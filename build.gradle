@@ -1,0 +1,51 @@
+plugins {
+	id "java-library"
+}
+
+group = 'dev.ncn.keycloak.spi'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '11'
+	targetCompatibility = '11'
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set("keycloakVersion", "19.0.3")
+	set("jbossLoggingVersion", "3.5.3.Final")
+}
+
+dependencies {
+
+	/* Adding keycloak Dependencies */
+	compileOnly("org.keycloak:keycloak-core:${keycloakVersion}")
+	compileOnly("org.keycloak:keycloak-services:${keycloakVersion}")
+	compileOnly("org.keycloak:keycloak-model-jpa:${keycloakVersion}")
+	compileOnly("org.keycloak:keycloak-server-spi:${keycloakVersion}")
+	compileOnly("org.keycloak:keycloak-server-spi-private:${keycloakVersion}")
+
+	/* Adding JBOSS Logging Dependencies */
+	compileOnly("org.jboss.logging:jboss-logging:${jbossLoggingVersion}")
+
+	/* Adding Apache Commons Dependencies */
+	implementation("org.apache.commons:commons-lang3:3.12.0")
+
+	/* Adding Slf4j Dependencies */
+	implementation("org.slf4j:slf4j-api:2.0.7")
+
+	/* Adding Commons Net Dependencies */
+	implementation("commons-net:commons-net:3.9.0")
+
+	/* Adding Lombok Dependencies */
+	compileOnly("org.projectlombok:lombok:1.18.22")
+	annotationProcessor("org.projectlombok:lombok:1.18.22")
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
