@@ -1,5 +1,6 @@
 package dev.ncn.keycloak.spi.unp.connections.jpa.entityprovider;
 
+import dev.ncn.keycloak.spi.unp.connections.jpa.entity.UserNetworkPolicyEntity;
 import org.keycloak.connections.jpa.entityprovider.JpaEntityProvider;
 
 import java.util.Collections;
@@ -12,7 +13,7 @@ public class CustomJPAEntityProvider implements JpaEntityProvider {
 
     @Override
     public List<Class<?>> getEntities() {
-        return Collections.singletonList(null);
+        return Collections.singletonList(UserNetworkPolicyEntity.class);
     }
 
     @Override
