@@ -16,6 +16,14 @@ repositories {
 
 jar {
 	archiveBaseName = project.name
+	duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+	configurations.implementation.setCanBeResolved(true)
+	metaInf {
+		from 'src/main/resources/META-INF/*'
+	}
+	from {  configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } } {
+		exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+	}
 }
 
 ext {

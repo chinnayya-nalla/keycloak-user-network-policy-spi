@@ -105,7 +105,7 @@ public class UserNetworkPolicyResourceProviderService {
 
     }
 
-    private List<UserNetworkPolicyEntity> getUserNetworkPolicyForUser(KeycloakSession session, String userId) {
+    public List<UserNetworkPolicyEntity> getUserNetworkPolicyForUser(KeycloakSession session, String userId) {
         EntityManager entityManager = session.getProvider(JpaConnectionProvider.class).getEntityManager();
         return entityManager.createNamedQuery("getAllUserNetworkPoliciesByUser", UserNetworkPolicyEntity.class).setParameter("userId", userId).getResultList();
     }
