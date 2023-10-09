@@ -19,7 +19,6 @@ build/
 *.iws
 *.iml
 *.ipr
-*.bin
 out/
 bin/
 !**/src/main/**/out/
