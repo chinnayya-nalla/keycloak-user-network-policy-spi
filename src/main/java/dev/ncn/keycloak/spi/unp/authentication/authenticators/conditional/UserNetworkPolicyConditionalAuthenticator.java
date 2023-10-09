@@ -27,6 +27,7 @@ public class UserNetworkPolicyConditionalAuthenticator implements ConditionalAut
     public boolean matchCondition(AuthenticationFlowContext context) {
 
         UserModel user = context.getUser();
+        boolean isNetworkAccessNotMatched = true;
         String userIPAddress = context.getConnection().getRemoteAddr();
 
         List<UserNetworkPolicyEntity> userNetworkPolicyEntities = service.getUserNetworkPolicyForUser(context.getSession(), context.getUser().getId());
@@ -34,7 +35,6 @@ public class UserNetworkPolicyConditionalAuthenticator implements ConditionalAut
             return false;
         }
 
-        boolean isNetworkAccessNotMatched = true;
         for (UserNetworkPolicyEntity userNetworkPolicyEntity : userNetworkPolicyEntities) {
             log.info("Validating User {} With User IP Address {} for Configured Network Address {} and Subnet Mask {}", user.getId(), userIPAddress, userNetworkPolicyEntity.getNetworkAddress(), userNetworkPolicyEntity.getSubnetMask());
             SubnetUtils subnetUtils = new SubnetUtils(userNetworkPolicyEntity.getNetworkAddress(), userNetworkPolicyEntity.getSubnetMask());
