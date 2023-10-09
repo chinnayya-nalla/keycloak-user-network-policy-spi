@@ -3,15 +3,17 @@ package dev.ncn.keycloak.spi.unp.connections.jpa.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.keycloak.models.jpa.entities.UserEntity;
 
 import java.io.Serializable;
 
+/**
+ * @author <a href="mailto:chinnayya.nalla.careers@gmail.com">Chinnayya Naidu Nalla</a>
+ */
 @Entity
 @Table(name = "USER_NETWORK_POLICY")
 @NamedQueries({
-        @NamedQuery(name = "getAllUserNetworkPoliciesByUser", query = "SELECT u from UserNetworkPolicyEntity u where u.user.id = :userId"),
-        @NamedQuery(name = "removeAllUserNetworkPoliciesByUser", query = "DELETE FROM UserNetworkPolicyEntity u WHERE u.user.id = :userId")
+        @NamedQuery(name = "getAllUserNetworkPoliciesByUser", query = "SELECT u from UserNetworkPolicyEntity u where u.userId = :userId"),
+        @NamedQuery(name = "removeAllUserNetworkPoliciesByUser", query = "DELETE FROM UserNetworkPolicyEntity u WHERE u.userId = :userId")
 })
 @Setter
 @Getter
@@ -22,9 +24,8 @@ public class UserNetworkPolicyEntity implements Serializable {
     @Access(AccessType.PROPERTY)
     protected String id;
 
-    @ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name = "USER_ID")
-    protected UserEntity user;
+    @Column(name = "USER_ID")
+    protected String userId;
 
     @Column(name = "NETWORK_ADDRESS")
     protected String networkAddress;
