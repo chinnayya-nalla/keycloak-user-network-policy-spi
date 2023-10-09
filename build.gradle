@@ -19,8 +19,7 @@ jar {
 }
 
 ext {
-	set("keycloakVersion", "19.0.3")
-	set("jbossLoggingVersion", "3.5.3.Final")
+	set("keycloakVersion", "22.0.4")
 }
 
 dependencies {
@@ -31,9 +30,6 @@ dependencies {
 	compileOnly("org.keycloak:keycloak-model-jpa:${keycloakVersion}")
 	compileOnly("org.keycloak:keycloak-server-spi:${keycloakVersion}")
 	compileOnly("org.keycloak:keycloak-server-spi-private:${keycloakVersion}")
-
-	/* Adding JBOSS Logging Dependencies */
-	compileOnly("org.jboss.logging:jboss-logging:${jbossLoggingVersion}")
 
 	/* Adding Apache Commons Dependencies */
 	implementation("org.apache.commons:commons-lang3:3.12.0")

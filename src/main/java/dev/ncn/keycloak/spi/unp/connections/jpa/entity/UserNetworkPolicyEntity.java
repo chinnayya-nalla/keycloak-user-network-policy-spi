@@ -1,10 +1,10 @@
 package dev.ncn.keycloak.spi.unp.connections.jpa.entity;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.keycloak.models.jpa.entities.UserEntity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
