@@ -7,6 +7,7 @@ import org.keycloak.models.AuthenticationExecutionModel;
 import org.keycloak.models.KeycloakSessionFactory;
 import org.keycloak.provider.ProviderConfigProperty;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -15,6 +16,8 @@ import java.util.List;
 
 public class UserNetworkPolicyConditionalAuthenticatorFactory implements ConditionalAuthenticatorFactory  {
 
+    public static final String CONF_NEGATE = "negate";
+    public static final String DEFAULT_ALLOW_ALL = "default_network_policy";
     public static final String ID = "conditional-user-network-policy";
 
     private static final AuthenticationExecutionModel.Requirement[] REQUIREMENT_CHOICES = {
@@ -33,7 +36,7 @@ public class UserNetworkPolicyConditionalAuthenticatorFactory implements Conditi
 
     @Override
     public boolean isConfigurable() {
-        return false;
+        return true;
     }
 
     @Override
@@ -48,12 +51,28 @@ public class UserNetworkPolicyConditionalAuthenticatorFactory implements Conditi
 
     @Override
     public String getHelpText() {
-        return null;
+        return "Flow is executed only if user Network Policy matches.";
     }
 
     @Override
     public List<ProviderConfigProperty> getConfigProperties() {
-        return null;
+
+        ProviderConfigProperty defaultPolicy = new ProviderConfigProperty();
+        defaultPolicy.setDefaultValue(true);
+        defaultPolicy.setName(DEFAULT_ALLOW_ALL);
+        defaultPolicy.setLabel("Default Policy");
+        defaultPolicy.setType(ProviderConfigProperty.BOOLEAN_TYPE);
+        defaultPolicy.setHelpText("When this is true, then the condition will evaluate Network Policy Match to true. When this is false, the condition will evaluate Network Policy Match to false");
+
+        ProviderConfigProperty negateOutput = new ProviderConfigProperty();
+        negateOutput.setName(CONF_NEGATE);
+        negateOutput.setDefaultValue(false);
+        negateOutput.setLabel("Negate output");
+        negateOutput.setType(ProviderConfigProperty.BOOLEAN_TYPE);
+        negateOutput.setHelpText("Apply a not to the check result");
+
+        return Arrays.asList(defaultPolicy, negateOutput);
+
     }
 
     @Override
