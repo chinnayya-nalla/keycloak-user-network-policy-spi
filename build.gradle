@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'dev.ncn.keycloak.spi'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0'
 
 java {
 	sourceCompatibility = '11'
@@ -12,6 +12,10 @@ java {
 
 repositories {
 	mavenCentral()
+}
+
+jar {
+	archiveBaseName = project.name
 }
 
 ext {
@@ -44,8 +48,4 @@ dependencies {
 	compileOnly("org.projectlombok:lombok:1.18.22")
 	annotationProcessor("org.projectlombok:lombok:1.18.22")
 
-}
-
-tasks.named('test') {
-	useJUnitPlatform()
 }
