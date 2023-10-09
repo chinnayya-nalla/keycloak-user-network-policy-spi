@@ -3,10 +3,12 @@ package dev.ncn.keycloak.spi.unp.services;
 import dev.ncn.keycloak.spi.unp.connections.jpa.entity.UserNetworkPolicyEntity;
 import dev.ncn.keycloak.spi.unp.representations.UserNetworkPolicyRepresentation;
 import jakarta.persistence.EntityManager;
+import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.common.util.CollectionUtil;
 import org.keycloak.connections.jpa.JpaConnectionProvider;
 import org.keycloak.models.KeycloakSession;
+import org.keycloak.models.UserModel;
 import org.keycloak.models.utils.KeycloakModelUtils;
 
 import java.util.*;
@@ -20,15 +22,20 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserNetworkPolicyResourceProviderService {
 
-    public List<UserNetworkPolicyRepresentation> fetchUserNetworkPolicyForUser(KeycloakSession session, String userId) {
+    public Response fetchUserNetworkPolicyForUser(KeycloakSession session, String userId) {
 
         log.info("Executing Fetch Network Policy for User {} ", userId);
+
+        UserModel userModel = session.users().getUserById(session.getContext().getRealm(), userId);
+        if(Objects.isNull(userModel)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
 
         List<UserNetworkPolicyRepresentation> userNetworkPolicyRepresentations = new ArrayList<>();
         List<UserNetworkPolicyEntity> userNetworkPolicyEntities = getUserNetworkPolicyForUser(session, userId);
 
         if(CollectionUtil.isEmpty(userNetworkPolicyEntities)) {
-            return Collections.emptyList();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
         userNetworkPolicyEntities.forEach(userNetworkPolicyEntity -> {
@@ -40,17 +47,19 @@ public class UserNetworkPolicyResourceProviderService {
             userNetworkPolicyRepresentations.add(userNetworkPolicyRepresentation);
         });
 
-        return userNetworkPolicyRepresentations;
+
+        return Response.ok().entity(userNetworkPolicyRepresentations).build();
 
     }
 
 
-    public void saveUserNetworkPolicyForUser(KeycloakSession session, String userId, List<UserNetworkPolicyRepresentation> userNetworkPolicyRepresentations) {
+    public Response saveUserNetworkPolicyForUser(KeycloakSession session, String userId, List<UserNetworkPolicyRepresentation> userNetworkPolicyRepresentations) {
 
         log.info("Executing Save Network Policy for User {} ", userId);
 
-        if(CollectionUtil.isEmpty(userNetworkPolicyRepresentations)) {
-            return;
+        UserModel userModel = session.users().getUserById(session.getContext().getRealm(), userId);
+        if(Objects.isNull(userModel) || CollectionUtil.isEmpty(userNetworkPolicyRepresentations)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
         EntityManager entityManager = session.getProvider(JpaConnectionProvider.class).getEntityManager();
@@ -81,6 +90,7 @@ public class UserNetworkPolicyResourceProviderService {
             });
         }
 
+        return Response.noContent().build();
     }
 
 

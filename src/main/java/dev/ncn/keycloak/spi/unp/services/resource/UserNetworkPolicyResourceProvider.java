@@ -35,19 +35,16 @@ public class UserNetworkPolicyResourceProvider implements RealmResourceProvider 
     @NoCache
     @Path("{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response saveUserNetworkPolicyForUser(@PathParam("userId") String userId, final List<UserNetworkPolicyRepresentation> userNetworkPolicyRepresentations) {
-        service.saveUserNetworkPolicyForUser(session, userId, userNetworkPolicyRepresentations);
-        return Response.ok().build();
-
+        return service.saveUserNetworkPolicyForUser(session, userId, userNetworkPolicyRepresentations);
     }
 
     @GET
     @NoCache
-    @Path("users/{userId}")
+    @Path("{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UserNetworkPolicyRepresentation> fetchUserNetworkPolicyForUser(@PathParam("userId") String userId) {
+    public Response fetchUserNetworkPolicyForUser(@PathParam("userId") String userId) {
         return service.fetchUserNetworkPolicyForUser(session, userId);
     }
 
