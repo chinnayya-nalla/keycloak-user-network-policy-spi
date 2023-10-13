@@ -1,6 +1,7 @@
 package dev.ncn.keycloak.spi.unp.services;
 
 import dev.ncn.keycloak.spi.unp.connections.jpa.entity.UserNetworkPolicyEntity;
+import dev.ncn.keycloak.spi.unp.helper.AuthenticationHelper;
 import dev.ncn.keycloak.spi.unp.representations.UserNetworkPolicyRepresentation;
 import jakarta.persistence.EntityManager;
 import jakarta.ws.rs.core.Response;
@@ -25,6 +26,8 @@ public class UserNetworkPolicyResourceProviderService {
     public Response fetchUserNetworkPolicyForUser(KeycloakSession session, String userId) {
 
         log.info("Executing Fetch Network Policy for User {} ", userId);
+
+        AuthenticationHelper.checkRealmAccess(session);
 
         UserModel userModel = session.users().getUserById(session.getContext().getRealm(), userId);
         if(Objects.isNull(userModel)) {
@@ -56,6 +59,8 @@ public class UserNetworkPolicyResourceProviderService {
     public Response saveUserNetworkPolicyForUser(KeycloakSession session, String userId, List<UserNetworkPolicyRepresentation> userNetworkPolicyRepresentations) {
 
         log.info("Executing Save Network Policy for User {} ", userId);
+
+        AuthenticationHelper.checkRealmAccess(session);
 
         UserModel userModel = session.users().getUserById(session.getContext().getRealm(), userId);
         if(Objects.isNull(userModel) || CollectionUtil.isEmpty(userNetworkPolicyRepresentations)) {
